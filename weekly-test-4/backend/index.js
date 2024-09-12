@@ -14,7 +14,7 @@ const port = 6546;
 
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "https://node-tasks-2z1g.onrender.com" }));
 
 app.get("/getit", (req, res) => {
   res.send("ello there");
