@@ -23,7 +23,7 @@ function App() {
       try {
         // const response = await axios.get("http://localhost:6546/getit");
         const response = await axios.post(
-          "http://localhost:6546/postMail",
+          "https://mailsender-vq66.onrender.com/postMail",
           formdata
         );
         setReply(response.status);
