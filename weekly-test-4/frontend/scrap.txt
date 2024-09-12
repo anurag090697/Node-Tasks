@@ -1,0 +1,62 @@
+import express from 'express';
+import fs from 'fs/promises';
+
+export async function requestsLogger(req, res, next) {
+  const startTime = Date.now();
+
+  // Create a log object
+  const log = {
+    method: req.method,
+    url: `http://localhost:6698${req.url}`,
+    timestamp: new Date().toLocaleString(),
+    responseTime: 0,
+  };
+
+  try {
+    // Read the existing logs from the file
+    let logs = [];
+    try {
+      const data = await fs.readFile('logs.json', 'utf8');
+      logs = JSON.parse(data);
+    } catch (error) {
+      // If the file doesn't exist or has an error, start with an empty array
+      console.error('Error reading logs.json:', error);
+    }
+
+    // Append the new log to the array
+    logs.push(log);
+
+    // Write the updated logs back to the file
+    await fs.writeFile('logs.json', JSON.stringify(logs, null, 2));
+  } catch (error) {
+    console.error('Error writing to logs.json:', error);
+  }
+
+  next();
+
+  const endTime = Date.now();
+  log.responseTime = endTime - startTime;
+
+  try {
+    // Update the existing logs in the file
+    let logs = [];
+    try {
+      const data = await fs.readFile('logs.json', 'utf8');
+      logs = JSON.parse(data);
+    } catch (error) {
+      // If the file doesn't exist or has an error, start with an empty array
+      console.error('Error reading logs.json:', error);
+    }
+
+    // Update the log object with the response time
+    const index = logs.findIndex((l) => l.timestamp === log.timestamp);
+    if (index !== -1) {
+      logs[index] = log;
+    }
+
+    // Write the updated logs back to the file
+    await fs.writeFile('logs.json', JSON.stringify(logs, null, 2));
+  } catch (error) {
+    console.error('Error updating logs.json:', error);
+  }
+}
