@@ -1,0 +1,20 @@
+{
+  "name": "job_search_api",
+  "version": "1.0.0",
+  "description": "Users can browse through many jobs available in database, update, delete, create new jobs.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jobs"
+  ],
+  "author": "Anurag Shukla",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.6.2"
+  }
+}

@@ -35,7 +35,7 @@ function App() {
   }
 
   return (
-    <div className='container flex flex-col gap-3 items-center justify-center min-h-dvh w-full'>
+    <div className='container bg-gradient-to-b from-sky-100 to-lime-50 flex flex-col gap-3 items-center justify-center min-h-dvh w-full'>
       <form
         action=''
         onSubmit={(e) => handlesubmit(e)}
