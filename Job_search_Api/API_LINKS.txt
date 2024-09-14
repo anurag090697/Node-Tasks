@@ -1,0 +1,4 @@
+get request = http://localhost:7676/getJobs
+post request = http://localhost:7676/addJob/:id
+put request = http://localhost:7676/updateJob/:id
+delete request = http://localhost:7676/removeJob/:id
