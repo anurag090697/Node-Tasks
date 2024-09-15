@@ -45,7 +45,7 @@ app.post("/addJob", async (req, res) => {
     const temp = await tm.save();
     res
       .status(201)
-      .json({ response: { Message: "Job Added Successfully", status: 201 } });
+      .json({ response: { data : tm , Message: "Job Added Successfully", status: 201 } });
   } catch (err) {
     res.status(400).json({ message: err });
   }
