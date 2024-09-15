@@ -3,25 +3,39 @@
 import express from "express";
 import mongoose from "mongoose";
 import { job } from "./JobSchema.js";
-const app = express();
+import "dotenv/config";
 
+const app = express();
+// console.log(process.env.DB_PASS)
 const port = 7676;
 const hostname = "localhost";
 
 app.use(express.json());
 
-app.get("/getJobs", async (req, res) => {
+app.use((req, res, next) => {
+  if (req.method !== 'GET') {
+    express.json()(req, res, next);
+  } else {
+    next();
+  }
+});
+
+app.get("/getJobs", async (req, res, next) => {
+  console.log("GET /getJobs route handler started");
   try {
-    const jobs = await job.find();
+    console.log("Attempting to fetch jobs from database...");
+    const jobs = await job.find().lean();
+    console.log(`Successfully fetched ${jobs.length} jobs`);
+
     res.status(200).json({
-      response: {
-        data: { jobs },
-        Status: 200,
-        Messgae: "Jobs Fetched Successfully.",
-      },
+      data: { jobs },
+      status: 200,
+      message: "Jobs Fetched Successfully.",
     });
+    console.log("Response sent successfully");
   } catch (err) {
-    res.sendStatus(500).json({ response: { error: err } });
+    console.error("Error in GET /getJobs:", err);
+    next(err);
   }
 });
 
@@ -33,7 +47,7 @@ app.post("/addJob", async (req, res) => {
       .status(201)
       .json({ response: { Message: "Job Added Successfully", status: 201 } });
   } catch (err) {
-    res.status(400).json({ response: { message: err } });
+    res.status(400).json({ message: err });
   }
 });
 
@@ -59,10 +73,27 @@ app.delete("/removeJob/:id", async (req, res) => {
   }
 });
 
-mongoose.connect("mongodb://127.0.0.1:27017/Projects").then(() => {
-  app.listen(port, hostname, () => {
-    console.log(
-      `api is woring at port ${hostname + " " + port} & database connected`
-    );
-  });
-});
+// mongoose.connect(process.env.DB_PASS).then(() => {
+//   app.listen(port, hostname, () => {
+//     console.log(
+//       `api is woring at port ${hostname + " " + port} & database connected`
+//     );
+//   });
+// });
+// mongodb://127.0.0.1:27017/Projects
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.DB_ID);
+    console.log("Connected to cloud database");
+
+    app.listen(port, () => {
+      console.log(`API is working on port ${port}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
+    process.exit(1);
+  }
+};
+
+connectDB();
