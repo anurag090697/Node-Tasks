@@ -11,7 +11,10 @@
   "license": "ISC",
   "description": "Url shortner API",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.6.1"
+    "mongoose": "^8.6.1",
+    "nanoid": "^5.0.7"
   }
 }
