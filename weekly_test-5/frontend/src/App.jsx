@@ -1,45 +1,160 @@
 /** @format */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
+import { FaTrash } from "react-icons/fa";
+import { MdEditSquare } from "react-icons/md";
 
 function App() {
-  async function getData() {
-    const response = await axios.get("http://localhost:6565/getData");
-    console.log(response);
+  const [tasks, setTasks] = useState([]);
+  const [formdata, setFormdata] = useState({});
+
+  function changeValue(e) {
+    let tm = formdata;
+    let k = e.currentTarget.name;
+    let v = e.target.value;
+    tm[k] = v;
+    setFormdata(tm);
+    // console.log();
   }
-  getData();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    let tm = formdata.date_time;
+    let diff = Date.now() - new Date(tm);
+    console.log(tm);
+    if (diff > 0) alert("Cannot do a task in the past please set future time.");
+    else {
+      getData();
+    }
+  }
+
+  async function getData() {
+    // const response = await axios.get("http://localhost:6565/getTasks");
+    const response = await axios.post(
+      "http://localhost:6565/addTask",
+      formdata
+    );
+    console.log(response);
+    // setTasks([
+    //   {
+    //     title: "go to sleep",
+    //     message: "sleep on time",
+    //     time: "00:00",
+    //     day: "16-09",
+    //     email: "cool.niks213@gmail.com",
+    //     status: "pending",
+    //   },{
+    //     title: "go to sleep",
+    //     message: "sleep on time",
+    //     time: "00:00",
+    //     day: "16-09",
+    //     email: "cool.niks213@gmail.com",
+    //     status: "pending",
+    //   },{
+    //     title: "go to sleep",
+    //     message: "sleep on time",
+    //     time: "00:00",
+    //     day: "16-09",
+    //     email: "cool.niks213@gmail.com",
+    //     status: "pending",
+    //   },{
+    //     title: "go to sleep",
+    //     message: "sleep on time",
+    //     time: "00:00",
+    //     day: "16-09",
+    //     email: "cool.niks213@gmail.com",
+    //     status: "pending",
+    //   },
+    // ]);
+  }
+
+  useEffect(() => {
+    // getData();
+  }, []);
+
   return (
     <div className='container min-h-dvh w-full bg-gradient-to-tr from-cyan-200 to-lime-200'>
-      <nav className='w-full py-4 px-2 flex items-center justify-between font-medium border-b-2 border-gray-500 bg-emerald-200'>
+      <nav className='w-full py-4 px-2 flex flex-wrap items-center justify-between font-medium border-b-2 border-gray-500 bg-emerald-200'>
         <h1 className='text-3xl text-rose-500'>PLAN_IT</h1>
-        <form action='' className='flex gap-4 px-8'>
+        <form
+          action=''
+          className='flex flex-wrap gap-4 px-8'
+          onSubmit={(e) => handleSubmit(e)}
+        >
           <input
             type='text'
             placeholder='Task Title....'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
+            name='title'
+            onChange={(e) => changeValue(e)}
+            required
           />
           <input
             type='text'
-            name=''
+            onChange={(e) => changeValue(e)}
+            required
+            name='message'
             id=''
             placeholder='Task detail...'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
           />
           <input
-            type='time'
-            name=''
-            id=''
+            type='email'
+            placeholder='Email....'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
+            name='email'
+            required
+            onChange={(e) => changeValue(e)}
           />
           <input
+            type='datetime-local'
+            required
+            name='date_time'
+            id=''
+            className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
+            onChange={(e) => changeValue(e)}
+          />
+          {/* <input
             type='date'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
-          />
-          <button>Add Task</button>
+            name='date'
+            onChange={(e) => changeValue(e)}
+            
+          /> */}
+          {/* <input type="datetime-local" /> */}
+          <button className='border-2 border-sky-700 px-2 text-sky-700 rounded-lg shadow-md bg-gradient-to-r from-orange-300 to-fuchsia-400 shadow-fuchsia-900 hover:shadow-none hover:from-fuchsia-400 hover:to-emerald-400 hover:text-white '>
+            Add Task
+          </button>
         </form>
       </nav>
+      <div className='p-10 flex flex-col gap-6'>
+        {tasks.length ? (
+          tasks.map((ele, idx) => {
+            return (
+              <div
+                key={idx}
+                className='flex items-center justify-around rounded-lg shadow-md font-medium text-xl text-gray-500 border-2 px-2 py-4 border-gray-400'
+              >
+                <h2>{ele.title}</h2>
+                <h3>{ele.message}</h3>
+                <h3>{ele.status}</h3>
+                <button className='text-rose-400 text-2xl hover:text-rose-600'>
+                  <FaTrash />
+                </button>
+                <button className='text-cyan-400 text-2xl hover:text-cyan-600'>
+                  <MdEditSquare />
+                </button>
+              </div>
+            );
+          })
+        ) : (
+          <p className='text-3xl text-rose-400 text-center my-auto'>
+            No Tasks to display
+          </p>
+        )}
+      </div>
     </div>
   );
 }

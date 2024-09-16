@@ -1,8 +1,16 @@
-# React + Vite
+<!-- @format -->
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# URL SHORTNER
 
-Currently, two official plugins are available:
+## ABOUT
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+In this application users can turn long urls into a short code.
+
+## FUNCTIONALITY
+
+In this application users need to put url or code in the input box and submit and after that click on the one of the two boxes below if user wants to copy the code click on the SHORTeNED URL box and if user already have shortened url click on ORGINAL URL box to copy.
+note: DO not forget to copy shortened url for future use.
+
+## HOSTED LINK
+
+[Click here to visit live page.](https://url-shortner-ayx5.vercel.app/)

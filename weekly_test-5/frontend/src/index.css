@@ -3,3 +3,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: "Gabriela", serif;
+  font-weight: 400;
+  font-style: normal;
+}

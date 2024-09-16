@@ -6,8 +6,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import axios from "axios";
 
 function App() {
-  const [newUrl, setnewUrl] = useState("URL");
-  const [shorty, setShorty] = useState("SHORTENeD");
+  const [newUrl, setnewUrl] = useState("");
+  const [shorty, setShorty] = useState("");
   const [errmsg, seterrmsg] = useState("");
 
   const justDoIt = () => {
@@ -45,10 +45,10 @@ function App() {
       </form>
       <div>
         <CopyToClipboard text={newUrl} onCopy={justDoIt}>
-          <p className='ansp'>URL</p>
+          <p className='ansp'>ORIGINAL URL</p>
         </CopyToClipboard>
         <CopyToClipboard text={shorty} onCopy={justDoIt}>
-          <p className='ansp'>SHORTENED</p>
+          <p className='ansp'>SHORTENED URL</p>
         </CopyToClipboard>
 
         <p className='errmsg'>{errmsg}</p>
