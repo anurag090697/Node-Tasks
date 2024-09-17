@@ -26,52 +26,47 @@ function App() {
     console.log(tm);
     if (diff > 0) alert("Cannot do a task in the past please set future time.");
     else {
+      const response = await axios.post(
+        "https://to-do-list-1t7m.onrender.com/addTask",
+        formdata
+      );
+      // console.log(response);
+      alert(response.data);
       getData();
     }
   }
 
   async function getData() {
-    // const response = await axios.get("http://localhost:6565/getTasks");
-    const response = await axios.post(
-      "http://localhost:6565/addTask",
-      formdata
+    const response = await axios.get(
+      "https://to-do-list-1t7m.onrender.com/getTasks"
     );
-    console.log(response);
-    // setTasks([
-    //   {
-    //     title: "go to sleep",
-    //     message: "sleep on time",
-    //     time: "00:00",
-    //     day: "16-09",
-    //     email: "cool.niks213@gmail.com",
-    //     status: "pending",
-    //   },{
-    //     title: "go to sleep",
-    //     message: "sleep on time",
-    //     time: "00:00",
-    //     day: "16-09",
-    //     email: "cool.niks213@gmail.com",
-    //     status: "pending",
-    //   },{
-    //     title: "go to sleep",
-    //     message: "sleep on time",
-    //     time: "00:00",
-    //     day: "16-09",
-    //     email: "cool.niks213@gmail.com",
-    //     status: "pending",
-    //   },{
-    //     title: "go to sleep",
-    //     message: "sleep on time",
-    //     time: "00:00",
-    //     day: "16-09",
-    //     email: "cool.niks213@gmail.com",
-    //     status: "pending",
-    //   },
-    // ]);
+    // const response = await axios.post(
+    //   "http://localhost:6565/addTask",
+    //   formdata
+    // );
+    // console.log(response);
+    setTasks(response.data);
+  }
+
+  // async function addNewTask() {
+  //   const response = await axios.post(
+  //     "http://localhost:6565/addTask",
+  //     formdata
+  //   );
+  //   console.log(response);
+  // }
+
+  async function deleteTask(id) {
+    const response = await axios.delete(
+      `https://to-do-list-1t7m.onrender.com/removeTask/${id}`
+    );
+    // console.log(response);
+    alert(response.data.message);
+    getData();
   }
 
   useEffect(() => {
-    // getData();
+    getData();
   }, []);
 
   return (
@@ -137,10 +132,22 @@ function App() {
                 key={idx}
                 className='flex items-center justify-around rounded-lg shadow-md font-medium text-xl text-gray-500 border-2 px-2 py-4 border-gray-400'
               >
-                <h2>{ele.title}</h2>
-                <h3>{ele.message}</h3>
-                <h3>{ele.status}</h3>
-                <button className='text-rose-400 text-2xl hover:text-rose-600'>
+                <h2 className='text-indigo-600'>{ele.title}</h2>
+                <h3 className='text-orange-500'>{ele.message}</h3>
+                <h3
+                  className={`${
+                    ele.status === "pending"
+                      ? "text-rose-500"
+                      : "text-green-500"
+                  }`}
+                >
+                  {ele.status}
+                </h3>
+                {/* <p>{ele._id}</p> */}
+                <button
+                  className='text-rose-400 text-2xl hover:text-rose-600 '
+                  onClick={() => deleteTask(ele._id)}
+                >
                   <FaTrash />
                 </button>
                 <button className='text-cyan-400 text-2xl hover:text-cyan-600'>
