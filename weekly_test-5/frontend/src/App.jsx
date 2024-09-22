@@ -19,6 +19,12 @@ function App() {
     // console.log();
   }
 
+  // async function editTask(arr) {
+  //   // let tm = arr;
+  //   // tm.editing = true;
+  //   setFormdata({ ...arr, editing: true });
+  //   console.log(formdata);
+  // }
   async function handleSubmit(e) {
     e.preventDefault();
     let tm = formdata.date_time;
@@ -40,21 +46,8 @@ function App() {
     const response = await axios.get(
       "https://to-do-list-1t7m.onrender.com/getTasks"
     );
-    // const response = await axios.post(
-    //   "http://localhost:6565/addTask",
-    //   formdata
-    // );
-    // console.log(response);
     setTasks(response.data);
   }
-
-  // async function addNewTask() {
-  //   const response = await axios.post(
-  //     "http://localhost:6565/addTask",
-  //     formdata
-  //   );
-  //   console.log(response);
-  // }
 
   async function deleteTask(id) {
     const response = await axios.delete(
@@ -70,12 +63,12 @@ function App() {
   }, []);
 
   return (
-    <div className='container min-h-dvh w-full bg-gradient-to-tr from-cyan-200 to-lime-200'>
-      <nav className='w-full py-4 px-2 flex flex-wrap items-center justify-between font-medium border-b-2 border-gray-500 bg-emerald-200'>
+    <div className='container min-h-dvh min-w-full w-full bg-gradient-to-tr from-cyan-200 to-lime-200'>
+      <nav className='w-full py-4 px-2 flex flex-wrap items-center gap-4 justify-center lg:justify-between font-medium border-b-2 border-gray-500 bg-emerald-200'>
         <h1 className='text-3xl text-rose-500'>PLAN_IT</h1>
         <form
           action=''
-          className='flex flex-wrap gap-4 px-8'
+          className='flex flex-wrap gap-4 px-8 justify-center'
           onSubmit={(e) => handleSubmit(e)}
         >
           <input
@@ -83,6 +76,7 @@ function App() {
             placeholder='Task Title....'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
             name='title'
+            // value={formdata.title}
             onChange={(e) => changeValue(e)}
             required
           />
@@ -92,6 +86,7 @@ function App() {
             required
             name='message'
             id=''
+            // value={formdata.message}
             placeholder='Task detail...'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
           />
@@ -100,6 +95,7 @@ function App() {
             placeholder='Email....'
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
             name='email'
+            // value={formdata.email}
             required
             onChange={(e) => changeValue(e)}
           />
@@ -108,17 +104,11 @@ function App() {
             required
             name='date_time'
             id=''
+            // value={formdata.date_time}
             className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
             onChange={(e) => changeValue(e)}
           />
-          {/* <input
-            type='date'
-            className=' text-center p-2 outline-orange-300 rounded-lg border-2 border-gray-300'
-            name='date'
-            onChange={(e) => changeValue(e)}
-            
-          /> */}
-          {/* <input type="datetime-local" /> */}
+
           <button className='border-2 border-sky-700 px-2 text-sky-700 rounded-lg shadow-md bg-gradient-to-r from-orange-300 to-fuchsia-400 shadow-fuchsia-900 hover:shadow-none hover:from-fuchsia-400 hover:to-emerald-400 hover:text-white '>
             Add Task
           </button>
@@ -130,10 +120,11 @@ function App() {
             return (
               <div
                 key={idx}
-                className='flex items-center justify-around rounded-lg shadow-md font-medium text-xl text-gray-500 border-2 px-2 py-4 border-gray-400'
+                className=' grid-cols-2 gap-3 md:gap-0
+               md:grid-cols-5 grid items-center text-center rounded-lg shadow-md font-medium text-xl text-gray-500 border-2 px-2 py-4 border-gray-400'
               >
                 <h2 className='text-indigo-600'>{ele.title}</h2>
-                <h3 className='text-orange-500'>{ele.message}</h3>
+                <h3 className='text-orange-500 md:col-span-2'>{ele.message}</h3>
                 <h3
                   className={`${
                     ele.status === "pending"
@@ -143,16 +134,19 @@ function App() {
                 >
                   {ele.status}
                 </h3>
-                {/* <p>{ele._id}</p> */}
+
                 <button
-                  className='text-rose-400 text-2xl hover:text-rose-600 '
+                  className='text-rose-400 text-2xl hover:text-rose-600 mx-auto'
                   onClick={() => deleteTask(ele._id)}
                 >
                   <FaTrash />
                 </button>
-                <button className='text-cyan-400 text-2xl hover:text-cyan-600'>
+                {/* <button
+                  className='text-cyan-400 text-2xl mx-auto hover:text-cyan-600'
+                  // onClick={() => editTask(ele)}
+                >
                   <MdEditSquare />
-                </button>
+                </button> */}
               </div>
             );
           })

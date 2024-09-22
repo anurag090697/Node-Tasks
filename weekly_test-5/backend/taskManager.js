@@ -24,11 +24,11 @@ export async function taskManager(req, res) {
           process.env.userMail,
           process.env.userPass,
           tm.email,
-          "This mail is sent via a demo project.",
-          `Hello user, I hope this email finds you well. This is a reminder mail for you to ${tm.title} and message- ${tm.message}. As it was set for this exact moment.`
+          "This is a reminder email sent via NODEMAILER.",
+          `Hello user, I hope this email finds you well. This is a reminder mail for you reagrding the task you scheduled- ${tm.title} and message- ${tm.message}.\n (Note- Delete the task once from website completed.)`
         );
-          // res.status(201).send("successfull");
-          updateTask(newData);
+        // res.status(201).send("successfull");
+        updateTask(newData);
       } catch (err) {
         // res.status(400).send("Failed try again");
         console.log(err);
@@ -36,7 +36,7 @@ export async function taskManager(req, res) {
     },
     { scheduled: true, timezone: "Asia/Kolkata" }
   );
-  
+
   // console.log(time);
   res.send("Task scheduled");
 }
